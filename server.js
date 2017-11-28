@@ -13,7 +13,7 @@ mongoose.Promise = global.Promise;
 const { router: usersRouter } = require('./users');
 const { router: authRouter, basicStrategy, jwtStrategy } = require('./auth');
 const { router: planetsRouter} = require('./planets');
-const { PORT, DATABASE_URL } = require('./config');
+const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
 const app = express();
@@ -22,7 +22,12 @@ passport.use(basicStrategy);
 passport.use(jwtStrategy);
 
 app.use(morgan('common', { skip: () => process.env.NODE_ENV === 'test' }));
-app.use(cors());
+app.use(
+  cors({
+    origin: CLIENT_ORIGIN
+  })
+);
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 

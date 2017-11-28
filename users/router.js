@@ -12,6 +12,7 @@ const jsonParser = bodyParser.json();
 router.post('/', jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
+  console.log(req.body);
 
   if (missingField) {
     return res.status(422).json({
@@ -52,7 +53,7 @@ router.post('/', jsonParser, (req, res) => {
 
   const sizedFields = {
     username: { min: 1 },
-    password: { min: 10, max: 72 }
+    password: { min: 5, max: 72 }
   };
   const tooSmallField = Object.keys(sizedFields).find(field =>
     'min' in sizedFields[field] &&
