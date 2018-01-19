@@ -37,22 +37,22 @@ router.get('/:name', (req, res) => {
 });
 
 // User Post 
-router.post('/:planetId/comments', jsonParser, jwtAuth, (req, res) => {
+router.post('/:name/comments', jsonParser, jwtAuth, (req, res) => {
 
-  if (req.body.content.length < 1) {
+  if (req.body.length < 1) {
     return res.status(422).json({message: 'Length Must be at Least 1 Character'});
   }
   else if (typeof req.body.content !== 'string') {
     return res.status(422).json({message: 'Invalid Input Type'});
   }
-
+  console.log(req.user.username, 'i am the username', req.body.content, 'i am the content');
   const newComment = {
     content: req.body.content,
     username: req.user.username
   };
   Planet
     .update(
-      { _id: req.params.planetId},
+      { name: req.params.name},
       { $push: { comments: newComment}}
     )
     .then(() => res.sendStatus(201))
