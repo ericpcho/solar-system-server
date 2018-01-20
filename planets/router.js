@@ -45,7 +45,6 @@ router.post('/:name/comments', jsonParser, jwtAuth, (req, res) => {
   else if (typeof req.body.content !== 'string') {
     return res.status(422).json({message: 'Invalid Input Type'});
   }
-  console.log(req.user.username, 'i am the username', req.body.content, 'i am the content');
   const newComment = {
     content: req.body.content,
     username: req.user.username
